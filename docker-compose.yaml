@@ -1,0 +1,29 @@
+services:
+  colmap_sfm:
+    image: rkhafizov.colmap_sfm
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rkhafizov.colmap_sfm_container
+    volumes:
+      # - /home/r.khafizov/Gaussian-Grouping:/workspace/data_gaussians
+      # - /home/r.khafizov/gaussian_splatting/gaussian-grouping:/workspace/gaussian-grouping
+      - /mnt/data/t.voronich/ScanNet++:/workspace/data_scannet
+      # - /mnt/c/Users/Timothy/COLMAP:/workspace/data
+      # - /home/trajan/datasets/3DGS/:/workspace/data
+      # - ./SemanticGaussianSlam:/workspace/SemanticGaussianSlam
+      # - ../:/workspace
+    ports:
+      - "6666:6666"  # Adjust the port mapping as needed
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all  # Adjust GPU visibility as needed
+    command: "/bin/bash -c 'source /etc/bash.bashrc && tail -f /dev/null && /bin/bash'"  # Keep container running
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            # count: 1
+            device_ids: ["2"]
+            capabilities: [gpu]
+          memory: 2048M
