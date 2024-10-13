@@ -23,12 +23,9 @@ RUN apt-get update && apt-get install -y \
     qtbase5-dev \
     libqt5opengl5-dev \
     libcgal-dev \
-    libceres-dev 
-    
-
-# \
-# nvidia-cuda-toolkit \
-# nvidia-cuda-toolkit-gcc
+    libceres-dev \
+    python3.8 \
+    python3-pip
 
 RUN apt-get install gcc-10 g++-10 -y
 RUN export CC=/usr/bin/gcc-10
@@ -45,16 +42,11 @@ RUN cmake ..
 RUN make
 RUN make install 
 
-RUN apt-get install -y python3.8 \
-    python3-pip
-
-COPY /images /home/images
 COPY prep_data.py /home/prep_data.py
 RUN chmod +x /home/prep_data.py
 
 COPY run_colmap.py /home/run_colmap.py
 RUN chmod +x /home/run_colmap.py
-# CMD ["python3", "/home/run_colmap.py"]
 RUN ls
 
 
